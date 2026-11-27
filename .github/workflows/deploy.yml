@@ -1,0 +1,55 @@
+# Déploiement sur main (architecture §11.2). Ordre fixe : migrations, puis code, puis smoke test.
+# Sprint 0 : préproduction seulement. Le job de production est ajouté au sprint 3, derrière
+# l'environnement GitHub « production » (approbation manuelle requise).
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
+
+jobs:
+  staging:
+    name: Préproduction
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: staging
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      SUPABASE_PROJECT_REF: ${{ vars.SUPABASE_PROJECT_REF }}
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: supabase/setup-cli@689adcfb80d947100a1eab127289b97d1fb07b13 # v3.2.0
+        with:
+          version: 3.1.0
+      - run: npm ci
+      - name: Migrations (hute-staging)
+        run: |
+          supabase link --project-ref "$SUPABASE_PROJECT_REF"
+          supabase db push
+      - run: npm run build
+      - name: Déployer le Worker hute-staging
+        id: deploy
+        run: npx wrangler deploy --env staging --var "APP_VERSION:${GITHUB_SHA::7}"
+      - name: Smoke test
+        run: |
+          url="${{ vars.STAGING_URL }}"
+          curl --fail --silent --show-error --max-time 10 "$url/api/health"
+          curl --fail --silent --show-error --max-time 10 --output /dev/null "$url/"
+      - name: Rollback si le smoke test échoue
+        if: failure() && steps.deploy.outcome == 'success'
+        run: npx wrangler rollback --env staging --message "Smoke test en échec (${GITHUB_SHA::7})" -y

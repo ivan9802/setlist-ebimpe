@@ -1,8 +1,8 @@
 # CAHIER DES CHARGES FONCTIONNEL ET TECHNIQUE
 
-## HIMRA ULTRA TRACKLIST EXPERIENCE
+## SETLIST-EBIMP
 
-**Version :** 3.0\
+**Version :** 1.0\
 **Date :** 25 novembre 2026\
 **Statut :** Spécification de référence pour le MVP\
 **Nature du projet :** Initiative indépendante de fans\

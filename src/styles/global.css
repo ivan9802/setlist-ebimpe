@@ -1,0 +1,20 @@
+@import 'tailwindcss';
+
+/* Tokens provisoires : le système complet (tokens.css, polices) arrive au sprint 1. */
+@theme {
+  --color-night: #0e0d0c;
+  --color-paper: #f2ede3;
+  --color-muted: #a39b8f;
+  --color-signal: #ff4d3d;
+  --color-focus: #ffd23f;
+}
+
+body {
+  background-color: var(--color-night);
+  color: var(--color-paper);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}

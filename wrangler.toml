@@ -1,0 +1,35 @@
+# Worker HUTE : fichiers statiques + routes /api/* et /t/* (architecture §5.1.2, ADR-001).
+# Secrets (jamais ici) : `wrangler secret put SUPABASE_SECRET_KEY` et `TURNSTILE_SECRET_KEY`, par environnement.
+
+name = "hute"
+main = "worker/index.ts"
+compatibility_date = "2026-11-10"
+workers_dev = true
+preview_urls = false
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+run_worker_first = ["/api/*", "/t/*"]
+
+[observability]
+enabled = true
+
+# Production. SUPABASE_URL est renseignée au sprint 1, avec le projet hute-prod.
+[vars]
+APP_VERSION = "dev"
+SUPABASE_URL = ""
+ALLOWED_ORIGINS = ""
+
+# Préproduction : un Worker distinct, pour que ses secrets (projet hute-staging, widget Turnstile
+# de test) ne soient jamais partagés avec la production. Chaque PR y publie une version de
+# prévisualisation avec sa propre URL.
+[env.staging]
+name = "hute-staging"
+preview_urls = true
+
+[env.staging.vars]
+APP_VERSION = "staging"
+SUPABASE_URL = ""
+ALLOWED_ORIGINS = ""
