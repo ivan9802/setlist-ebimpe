@@ -1,8 +1,7 @@
 # CAHIER DES CHARGES FONCTIONNEL ET TECHNIQUE
 
 ## SETLIST-EBIMP
-
-**Version :** 1.0\
+**Version :** 3.0
 **Date :** 25 novembre 2026\
 **Statut :** Spécification de référence pour le MVP\
 **Nature du projet :** Initiative indépendante de fans\
