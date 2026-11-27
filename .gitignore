@@ -1,0 +1,23 @@
+# Dépendances et builds
+node_modules/
+dist/
+.wrangler/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+
+# Secrets : jamais dans le dépôt (voir .env.example)
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+
+# Supabase local
+supabase/.branches/
+supabase/.temp/
+
+# Système
+.DS_Store
+Thumbs.db
