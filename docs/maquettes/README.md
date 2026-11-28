@@ -70,4 +70,10 @@ Sous 1 024 px, l'administration passe en menu, en listes de cartes et en dialogu
 
 ## Export PNG
 
-L'export automatique n'a pas été lancé, à cause des limites d'appels de l'offre Figma Starter. Pour exporter : sélectionner les frames, puis **Export**, format **PNG** en **2x**, et enregistrer dans `docs/maquettes/png/` en gardant le numéro en préfixe.
+La première vague (page 1) est exportée dans `docs/maquettes/png/`, un fichier par écran, nommé par son numéro (`01-accueil.png`, `09-carte-1080x1350.png`…). Les annotations de motion et d'accessibilité de l'accueil sont dans `01-accueil-annotations.png`.
+
+- Source : la copie du fichier dans les brouillons d'Adomon Roch N'CHO, le 28/11/2026, capturée par le serveur MCP de Figma puis découpée écran par écran.
+- Échelle : **1x** (360 px de large pour les écrans mobiles). Pour un export 2x, sélectionner les frames dans Figma, puis **Export**, format **PNG** en **2x**, et remplacer les fichiers en gardant les noms.
+- Les pages 2 (seconde vague) et 3 (administration) ne sont pas encore exportées.
+
+Ces images servent de référence pour le développement et la recette, sans consommer le quota d'appels de l'offre Figma Starter. Figma reste la source de vérité : si une maquette change, l'export est à refaire.
