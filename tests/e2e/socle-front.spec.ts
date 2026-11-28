@@ -1,4 +1,5 @@
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test } from './fixtures.ts'
+import type { Page } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 
 async function expectNoSeriousViolations(page: Page) {
@@ -31,7 +32,7 @@ test.describe('socle front (phase 1)', () => {
     page,
   }) => {
     await page.goto('/')
-    await page.getByRole('link', { name: 'Composer ma set-list' }).click()
+    await page.getByRole('link', { name: 'Composer ma set-list' }).first().click()
     await expect(page).toHaveURL(/\/composer\/morceaux$/)
     await expect(page.getByRole('heading', { level: 1 })).toBeFocused()
   })

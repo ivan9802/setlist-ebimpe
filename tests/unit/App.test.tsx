@@ -26,10 +26,9 @@ describe('accueil (socle)', () => {
   it('affiche un seul titre principal, le bouton principal et la mention d’indépendance', () => {
     renderAt('/')
     expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1)
-    expect(screen.getByRole('link', { name: 'Composer ma set-list' }).getAttribute('href')).toBe(
-      '/composer/morceaux',
-    )
-    expect(screen.getByText(/initiative indépendante de fans/i)).toBeTruthy()
+    const ctas = screen.getAllByRole('link', { name: 'Composer ma set-list' })
+    expect(ctas[0]?.getAttribute('href')).toBe('/composer/morceaux')
+    expect(screen.getAllByText(/initiative indépendante de fans/i).length).toBeGreaterThan(0)
   })
 
   it('a un lien d’évitement vers le contenu principal', () => {

@@ -38,9 +38,12 @@ export function formatTime(iso: string): string {
   return d ? timeFormat.format(d) : ''
 }
 
-/** 4812 → « 4 812 » (espace insécable fine, comme le veut le français). */
+/**
+ * 4812 → « 4 812 », 1204 → « 1 204 », avec une espace insécable normale : l'espace fine du
+ * français (U+202F) est presque invisible en Instrument Sans à 13 px (maquette 01 : « 1 204 »).
+ */
 export function formatNumber(n: number): string {
-  return numberFormat.format(n)
+  return numberFormat.format(n).replace(/\u202f/g, '\u00a0')
 }
 
 /** 41.7 → « 41,7 % ». */

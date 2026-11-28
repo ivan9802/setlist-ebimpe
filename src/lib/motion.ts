@@ -9,6 +9,13 @@ export function isModestDevice(nav: NavigatorHints): boolean {
   return (memory !== undefined && memory <= 2) || (cores !== undefined && cores > 0 && cores <= 4)
 }
 
+/** Vrai si les animations riches sont permises : pas de réduction demandée, appareil capable. */
+export function prefersRichMotion(): boolean {
+  if (typeof window === 'undefined') return false
+  const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
+  return !reduced && !document.documentElement.classList.contains('motion-lite')
+}
+
 export function applyMotionLite(
   root: HTMLElement = document.documentElement,
   nav: NavigatorHints = navigator,

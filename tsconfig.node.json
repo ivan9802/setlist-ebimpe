@@ -12,6 +12,8 @@
     "playwright.config.ts",
     "eslint.config.js",
     "scripts",
-    "tests/e2e"
+    "tests/e2e",
+    "tests/fixtures",
+    "shared"
   ]
 }

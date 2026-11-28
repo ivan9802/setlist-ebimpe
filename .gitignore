@@ -11,6 +11,8 @@ test-results/
 .env
 .env.*
 !.env.example
+# Valeurs fictives et publiques du mode maquette (aucun secret)
+!.env.mock
 .dev.vars
 .dev.vars.*
 

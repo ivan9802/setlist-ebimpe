@@ -9,8 +9,10 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:mock": "vite --mode mock",
     "dev:worker": "wrangler dev --port 8787",
     "build": "tsc -b && vite build",
+    "build:mock": "tsc -b && vite build --mode mock",
     "preview": "wrangler dev --port 8787",
     "typecheck": "tsc -b",
     "lint": "eslint . --max-warnings=0",

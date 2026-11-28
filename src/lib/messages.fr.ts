@@ -48,8 +48,11 @@ export const t = {
   retry: 'Réessayer',
   backHome: "Retour à l'accueil",
 
+  /** Version courte de la mention, sous le bouton de l'ouverture (maquettes 01 et 01c). */
+  independenceShort: 'Initiative indépendante de fans, sans lien officiel avec HIMRA.',
+
   header: {
-    brand: 'HIMRA ULTRA TRACKLIST',
+    brand: 'HIMRA ULTRA',
     brandLabel: "HIMRA Ultra Tracklist Experience, retour à l'accueil",
     results: 'Résultats',
     nav: 'Navigation principale',
@@ -60,6 +63,8 @@ export const t = {
     legal: 'Mentions légales',
     privacy: 'Confidentialité',
     terms: 'Conditions de participation',
+    termsShort: 'Conditions',
+    fullName: 'HIMRA ULTRA TRACKLIST EXPERIENCE',
   },
 
   steps: {
@@ -106,11 +111,50 @@ export const t = {
   upcoming: 'Cet écran arrive bientôt.',
 
   home: {
+    // Séquence 1 · Ouverture (maquette 01)
+    eventLabel: "26.12 · Stade d'Ebimpé",
     title: 'EBIMPÉ SE PRÉPARE.',
+    promise: 'LES ULTRA DÉCIDENT.',
     hook: 'Le 26 décembre, Ebimpé chante. Dis ce que tu veux entendre.',
     cta: 'Composer ma set-list',
     results: 'Voir les résultats',
-    counterLabel: (n: number) => plural(n, 'set-list déposée', 'set-lists déposées'),
+    counterLabel: (n: number) =>
+      plural(n, 'set-list déposée par les ULTRA', 'set-lists déposées par les ULTRA'),
+    counterSr: (count: string, n: number) =>
+      `${count} ${plural(n, 'set-list déposée', 'set-lists déposées')} par les ULTRA`,
+    // Séquence 2 · La feuille
+    sheetEyebrow: 'Le principe',
+    sheetTitle: ['TA FEUILLE.', 'TON ORDRE.'] as const,
+    sheetLabel: 'EXEMPLE',
+    sheetNote: "Jusqu'à 20 titres, dans l'ordre où tu veux les entendre. Jusqu'à 5 guests rêvés.",
+    // Séquence 3 · La tribune
+    tribuneEyebrow: 'La tribune',
+    tribuneTitle: 'CE QUE LES ULTRA RÉCLAMENT',
+    tribuneTracks: 'Titres les plus demandés',
+    tribuneGuests: 'Guests les plus demandés',
+    tribuneLine: (selections: string, n: number, percent: string) =>
+      `${selections} ${plural(n, 'set-list', 'set-lists')} · ${percent}`,
+    tribuneNote: 'Classements mis à jour chaque minute. Visibles à partir de 10 set-lists.',
+    tribuneWaiting: 'Les premières set-lists arrivent. Sois dans les premiers.',
+    // Séquence 4 · Le casting
+    castingEyebrow: 'Le casting',
+    castingTitle: 'TON CASTING RÊVÉ',
+    castingNote: 'Des souhaits de fans, pas une annonce de programmation.',
+    castingSr: (names: string) => `Guests proposés : ${names}.`,
+    castingCta: 'Choisir mes guests',
+    // Séquence 5 · Rappel et barre collante (maquette 01b)
+    recallTitle: ['À TOI DE', 'COMPOSER.'] as const,
+    stickyCta: 'Composer',
+    stickyLabel: 'set-lists',
+    // Campagne close (maquette 01c)
+    closedTitle: 'LES SET-LISTS SONT CLOSES.',
+    closedHook: 'Merci aux ULTRA. Voici ce que la communauté a réclamé.',
+    closedCounterLabel: (n: number) => plural(n, 'set-list déposée', 'set-lists déposées'),
+  },
+
+  playlist: {
+    castingLabel: 'Mon casting',
+    feat: (artists: string) => `feat. ${artists}`,
   },
 
   pages: {

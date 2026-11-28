@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import './tokens.css';
 @import './fonts.css';
+@import './motion.css';
 
 @layer base {
   :root {
@@ -76,13 +77,25 @@
     box-shadow: var(--shadow-paper);
   }
 
-  /* Halo unique du projecteur, derrière la feuille ou le titre. Supprimé en motion-lite. */
+  /* Halo unique du projecteur, derrière le titre (maquette 01 : rouge fumigène à 30 %, centré en
+     haut à droite, éteint à environ 17 rem). Supprimé en motion-lite. */
   .spotlight {
     background-image: radial-gradient(
-      ellipse 70% 55% at 50% 35%,
-      rgb(242 237 227 / 0.09),
-      transparent 70%
+      circle 17rem at 70% 11rem,
+      rgb(255 77 61 / 0.3),
+      rgb(255 77 61 / 0.12) 55%,
+      transparent
     );
+  }
+
+  /* Surtitre de séquence (« LE PRINCIPE », « 26.12 · STADE D'EBIMPÉ ») : capitales rouges. */
+  .eyebrow {
+    font-size: var(--text-eyebrow);
+    line-height: var(--text-eyebrow--line-height);
+    letter-spacing: var(--text-eyebrow--letter-spacing);
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--color-signal);
   }
 
   :root.motion-lite .spotlight {

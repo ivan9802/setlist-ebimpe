@@ -32,7 +32,9 @@ describe('messages.fr (ADR-008)', () => {
       '',
     )
     expect(all).not.toMatch(/tracklist/i)
-    expect(all).not.toMatch(/programmation/i)
+    // « Programmation » n'apparaît que pour dire que ce n'en est pas une (RG-GST-05, DA §1.3).
+    expect(all.match(/programmation/gi) ?? []).toHaveLength(1)
+    expect(t.home.castingNote).toBe('Des souhaits de fans, pas une annonce de programmation.')
   })
 })
 

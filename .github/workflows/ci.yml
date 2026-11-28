@@ -65,7 +65,9 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
-      - run: npm run build
+      # Build en mode maquette : les appels à Supabase partent vers /__mock__ et sont servis par
+      # Playwright avec les données fictives (tests/e2e/fixtures.ts). Aucune base n'est nécessaire.
+      - run: npm run build:mock
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
       - if: failure()

@@ -42,17 +42,20 @@ npm ci                      # installe les versions exactes du lockfile
 cp .env.example .env.local  # valeurs locales, jamais commitées
 npm run db:start            # base Supabase locale (Docker), migrations et seed fictif
 npm run dev                 # interface sur http://localhost:5173
+npm run dev:mock            # interface avec des données FICTIVES, sans Supabase ni Docker
 npm run build && npm run preview   # site complet (statique + Worker) sur http://localhost:8787
 ```
 
 Les secrets du Worker en local vont dans `.dev.vars` (ignoré par Git). Voir la fin de `.env.example`.
+
+Mode maquette (`.env.mock`) : le serveur de dev répond lui-même aux appels Supabase avec les données de `tests/fixtures/`. Le scénario se choisit avec la variable `HUTE_MOCK` : `complet` (par défaut), `attente` (moins de 10 set-lists), `clos` (campagne close) ou `sans-guests`. Les écrans de la maquette sont exportés dans `docs/maquettes/png/`.
 
 ## Vérifier avant une PR
 
 ```bash
 npm run ci        # lint, format, types, tests unitaires, build, budgets, secrets
 npm run db:test   # tests SQL (RLS, fonctions), base locale démarrée
-npm run test:e2e  # Playwright + axe sur le build local
+npm run build:mock && npm run test:e2e  # Playwright + axe, données fictives interceptées
 ```
 
 ## Règles de contribution

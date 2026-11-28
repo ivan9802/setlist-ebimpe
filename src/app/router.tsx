@@ -8,7 +8,7 @@
 import { lazy } from 'react'
 import { Navigate, Route, Routes } from 'react-router'
 import { t } from '../lib/messages.fr.ts'
-import { HomePage } from '../pages/HomePage.tsx'
+import { HomePage } from '../pages/home/HomePage.tsx'
 import { NotFoundPage } from '../pages/NotFoundPage.tsx'
 import { ComposeLayout } from './layouts/ComposeLayout.tsx'
 import { PublicLayout } from './layouts/PublicLayout.tsx'

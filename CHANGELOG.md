@@ -4,6 +4,33 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Ver
 
 ## [Non publié]
 
+### Ajouté (front, phase 3 : accueil)
+
+- Accueil conforme aux maquettes 01, 01b et 01c, mesurées au pixel sur la copie Figma :
+  - ouverture : date, titre de campagne à 88 px sur mobile (120 px sur ordinateur), promesse, accroche, compteur réel, bouton principal, lien vers les résultats, mention d'indépendance. Visible sans défiler à 360 × 640 (CA-01) ;
+  - feuille d'exemple tirée du catalogue réel (rien n'est inventé, RG-CAT-07) ;
+  - tribune : top 3 des titres en banderoles avec leur part, top 3 des guests, ou message d'attente sous 10 set-lists (RG-RES-04) ;
+  - casting en banderole sur deux lignes, avec la liste complète en texte pour les lecteurs d'écran, et le bouton « Choisir mes guests » ;
+  - rappel « À toi de composer » ;
+  - barre d'action collante, qui apparaît après l'ouverture et disparaît sur le pied de page ;
+  - variante campagne close : les résultats passent devant (RG-CAM-02).
+- Motion en CSS pur (D-7) : révélation du titre à la première visite de la session, titre et halo au défilement, entrée de la feuille et du gaffer, déroulé des barres, glissement du casting au rythme du défilement. Uniquement si `animation-timeline` est géré ; rien ne bouge avec `prefers-reduced-motion` ; fondus seuls en `motion-lite`.
+- Compteur animé une seule fois ; seule la valeur finale est annoncée (`aria-live`). Aucun faux chiffre : « … » tant que le serveur n'a pas répondu.
+- Composant `SetlistSheet` (feuille figée), réutilisable pour le récapitulatif, la confirmation, la carte et la page publique. Hook `useStats`.
+- En-tête (« HIMRA ULTRA », « Résultats » discret) et pied de page (fond Plateau, liens en ligne, nom complet) alignés sur la maquette.
+- Mode maquette : `npm run dev:mock` (données fictives servies par le serveur de dev, scénarios `HUTE_MOCK`) et `npm run build:mock`, utilisé par la CI de bout en bout, dont Playwright intercepte les appels.
+- Écrans de la première vague exportés en PNG dans `docs/maquettes/png/`.
+- Tests : 10 tests unitaires de l'accueil et 6 tests de bout en bout (CA-01, axe, barre collante, campagne close, attente, panne sans faux chiffre), sur mobile et ordinateur.
+
+### Décisions (front, phase 3, à valider)
+
+- Tailles relevées sur la maquette, plus grandes que l'échelle de la DA (§3.1) : titre de campagne 88 px, titres de séquence 44 et 52 px, rappel et titre « close » 64 px, compteur 44 px. Ajoutées comme tokens (`text-hero`, `text-section`, `text-recall`…).
+- Top 3 de l'accueil livré dès l'ouverture, alors que D-7 le reportait en v1.1 : il figure dans la maquette validée et réutilise la lecture `get_stats` du compteur. Il tient dans une section isolée, facile à retirer.
+- La révélation « par masque » du titre anime `clip-path` (annotation de la maquette), seule exception à la règle « transform et opacity » de la DA (§8.1) : une fois par session, sur 3 mots, 1 s au plus.
+- Milliers séparés par une espace insécable normale plutôt que l'espace fine du français, presque invisible en Instrument Sans à 13 px (la maquette affiche « 1 204 »).
+- Mention d'indépendance courte sous le bouton de l'ouverture, comme sur la maquette ; la mention complète (RG-JUR-01) reste dans le pied de la même page.
+- `.env.mock` est versionné : il ne contient que des valeurs fictives et publiques.
+
 ### Ajouté (front, phase 2 : logique du catalogue et du brouillon)
 
 - `features/catalog` : recherche en mémoire insensible à la casse, aux accents et aux ligatures (« eclate » trouve « Éclaté », « coeur » trouve « Cœur »), tous les mots exigés ; filtres par projet (dont « Hors projet ») et par type, sérialisés dans l'adresse (`?projet=…&type=…`) ; regroupement par projet ; `useCatalog` et `useCampaign` (une seule requête `get_catalog` partagée, 10 min de validité), limites de la campagne, identifiants actifs.

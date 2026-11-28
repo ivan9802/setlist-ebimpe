@@ -1,0 +1,165 @@
+/*
+ * Motion de l'accueil (maquette 01, annotations « Motion au défilement » ; DA §8.2 et §8.4).
+ * - Animations CSS pilotées par le défilement : elles tournent sur le fil du compositeur, sans
+ *   JavaScript à chaque image. Le Motion JS est reporté (D-7).
+ * - Amélioration progressive : sans `animation-timeline` (certains Safari), la page reste statique
+ *   et entièrement lisible.
+ * - Rien ne bouge si l'utilisateur réduit les animations. La classe `motion-lite` (appareil
+ *   modeste) ne garde que des fondus.
+ * - Seules `transform`, ses propriétés individuelles et `opacity` sont animées (DA §8.1), avec
+ *   une exception : la révélation « par masque » du titre (annotation de la maquette 01) anime
+ *   `clip-path`, une fois par session, sur 3 mots et 1 s au plus.
+ */
+
+/* Le masque garde de la marge (valeurs négatives) : avec l'interligne serré du titre, les
+   accents (É) dépassent de la boîte du mot et seraient coupés par un inset(0). */
+@keyframes hero-reveal {
+  from {
+    clip-path: inset(100% -10% -25% -10%);
+    translate: 0 35%;
+  }
+  to {
+    clip-path: inset(-40% -10% -25% -10%);
+    translate: 0 0;
+  }
+}
+
+@keyframes hero-scroll {
+  to {
+    translate: 0 -2.5rem;
+    scale: 0.96;
+  }
+}
+
+@keyframes halo-fade {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes sheet-enter {
+  from {
+    rotate: -4deg;
+    translate: 0 24px;
+    opacity: 0;
+  }
+  to {
+    rotate: -1.5deg;
+    translate: 0 0;
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes tape-in {
+  from {
+    opacity: 0;
+    scale: 1.2;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes unroll {
+  from {
+    scale: 0 1;
+  }
+  to {
+    scale: 1 1;
+  }
+}
+
+@keyframes marquee-forward {
+  to {
+    translate: -25% 0;
+  }
+}
+
+@keyframes marquee-backward {
+  from {
+    translate: -25% 0;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Séquence 1 : titre révélé mot à mot (ligne par ligne sur mobile), 1,2 s au plus,
+     à la première visite de la session seulement (classe posée par Opening.tsx). */
+  :root:not(.motion-lite) .hero-word {
+    animation: hero-reveal 600ms var(--ease-ample) both;
+    animation-delay: calc(var(--i, 0) * 200ms);
+  }
+
+  @supports (animation-timeline: view()) {
+    .sheet-enter {
+      view-timeline-name: --feuille;
+    }
+    .tribune-timeline {
+      view-timeline-name: --tribune;
+    }
+    .casting-timeline {
+      view-timeline-name: --casting;
+    }
+
+    /* Séquence 1 : au défilement, le titre monte et se resserre, le halo s'atténue. */
+    :root:not(.motion-lite) .hero-title {
+      transform-origin: left bottom;
+      animation: hero-scroll linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 70vh;
+    }
+    :root:not(.motion-lite) .hero-halo {
+      animation: halo-fade linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 60vh;
+    }
+
+    /* Séquence 2 : la feuille entre en tournant (-4° → -1,5°) ; le gaffer arrive à 60 %. */
+    :root:not(.motion-lite) .sheet-enter {
+      animation: sheet-enter linear both;
+      animation-timeline: --feuille;
+      animation-range: entry 0% entry 100%;
+    }
+    :root.motion-lite .sheet-enter {
+      animation: fade-in linear both;
+      animation-timeline: --feuille;
+      animation-range: entry 0% entry 80%;
+    }
+    :root:not(.motion-lite) .tape-enter {
+      animation: tape-in linear both;
+      animation-timeline: --feuille;
+      animation-range: entry 60% entry 100%;
+    }
+
+    /* Séquence 3 : les barres du top 3 se déroulent l'une après l'autre. */
+    :root:not(.motion-lite) .banner-unroll {
+      animation: unroll linear both;
+      animation-timeline: --tribune;
+      animation-range: cover calc(5% + var(--i, 0) * 8%) cover calc(25% + var(--i, 0) * 8%);
+    }
+
+    /* Séquence 4 : les deux lignes du casting glissent en sens inverse, au rythme du défilement. */
+    :root:not(.motion-lite) .marquee-forward {
+      animation: marquee-forward linear both;
+      animation-timeline: --casting;
+      animation-range: cover;
+    }
+    :root:not(.motion-lite) .marquee-backward {
+      animation: marquee-backward linear both;
+      animation-timeline: --casting;
+      animation-range: cover;
+    }
+  }
+}

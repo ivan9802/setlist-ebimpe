@@ -43,6 +43,25 @@
   --text-caption: 0.8125rem;
   --text-caption--line-height: 1.4;
 
+  /*
+   * Tailles relevées sur la maquette 01 (accueil, 360 px), plus grandes que l'échelle §3.1 :
+   * titre de campagne 88 px qui remplit la largeur, titres de séquence 44 et 52 px, rappel 64 px,
+   * compteur 44 px. Elles grandissent jusqu'aux 120 px de la DA sur ordinateur.
+   */
+  --text-hero: clamp(3.5rem, 24.4vw, 7.5rem);
+  --text-hero--line-height: 0.87;
+  --text-section: 2.75rem;
+  --text-section--line-height: 0.92;
+  --text-section-l: 3.25rem;
+  --text-section-l--line-height: 0.9;
+  --text-recall: clamp(4rem, 17.8vw, 7.5rem);
+  --text-recall--line-height: 0.88;
+  --text-figure: 2.75rem;
+  --text-figure--line-height: 1;
+  --text-eyebrow: 0.8125rem;
+  --text-eyebrow--line-height: 1.2;
+  --text-eyebrow--letter-spacing: 0.08em;
+
   /* §9 Points de rupture : 360 (base), 390, 768, 1024, 1280, 1440 */
   --breakpoint-*: initial;
   --breakpoint-xs: 24.375rem;
@@ -134,6 +153,9 @@
     --text-display-m: 2.5rem;
     --text-title: 1.25rem;
     --text-body: 1.0625rem;
+    --text-section: 4.5rem;
+    --text-section-l: 5rem;
+    --text-figure: 3.5rem;
   }
 }
 

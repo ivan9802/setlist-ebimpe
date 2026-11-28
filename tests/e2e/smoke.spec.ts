@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { expect, test } from './fixtures.ts'
 import AxeBuilder from '@axe-core/playwright'
 
 test('le socle répond, en français, sans violation d’accessibilité sérieuse', async ({ page }) => {

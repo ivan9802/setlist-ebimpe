@@ -1,23 +1,27 @@
 // Bouton du design system (DA §5) : primary (rouge, texte encre), secondary (contour papier),
-// ghost (texte seul). Hauteur de 52 px, cible tactile d'au moins 48 px.
+// ghost (texte seul en capitales), link (texte en bas de casse). Hauteur de 52 px, cible tactile
+// d'au moins 48 px.
 // Désactivé : aria-disabled (le bouton reste atteignable au clavier) et raison écrite à côté.
 import { useId, type ButtonHTMLAttributes, type MouseEvent, type ReactNode } from 'react'
 import { Link, type LinkProps } from 'react-router'
 import { cx } from '../../lib/cx.ts'
 import { t } from '../../lib/messages.fr.ts'
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost'
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'link'
 
 const BASE =
-  'label-caps inline-flex items-center justify-center gap-2 rounded-control ' +
+  'inline-flex items-center justify-center gap-2 rounded-control ' +
   'transition-transform duration-(--duration-instant) ease-out select-none ' +
   'motion-safe:active:scale-[.98] aria-disabled:cursor-not-allowed aria-disabled:opacity-40'
 
 // Les marges internes sont propres à chaque variante : le lien texte s'aligne sur le texte voisin.
 const VARIANTS: Record<ButtonVariant, string> = {
-  primary: 'min-h-13 px-6 bg-signal text-ink',
-  secondary: 'min-h-13 px-6 border border-paper text-paper hover:bg-stage',
-  ghost: 'min-h-12 text-paper underline underline-offset-4 decoration-muted hover:decoration-paper',
+  primary: 'label-caps min-h-13 px-6 bg-signal text-ink',
+  secondary: 'label-caps min-h-13 px-6 border border-paper text-paper hover:bg-stage',
+  ghost:
+    'label-caps min-h-12 text-paper underline underline-offset-4 decoration-muted hover:decoration-paper',
+  // Lien texte en bas de casse (« Voir les résultats » sous le bouton principal, maquette 01).
+  link: 'min-h-12 text-[0.9375rem] font-semibold text-paper underline-offset-4 hover:underline',
 }
 
 export function buttonClasses(variant: ButtonVariant = 'primary', fullWidth = false): string {
