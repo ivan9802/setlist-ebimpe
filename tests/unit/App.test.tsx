@@ -44,7 +44,7 @@ describe('parcours de composition', () => {
   it('redirige /composer vers l’étape Morceaux', async () => {
     renderAt('/composer')
     expect(
-      await screen.findByRole('heading', { level: 1, name: 'Choisis tes morceaux' }),
+      await screen.findByRole('heading', { level: 1, name: 'CHOISIS TES TITRES' }),
     ).toBeTruthy()
   })
 
@@ -62,7 +62,7 @@ describe('parcours de composition', () => {
 
   it('met le focus sur le titre de la nouvelle étape après une navigation', async () => {
     const nav = renderAt('/composer/morceaux')
-    await screen.findByRole('heading', { level: 1, name: 'Choisis tes morceaux' })
+    await screen.findByRole('heading', { level: 1, name: 'CHOISIS TES TITRES' })
     await act(async () => nav.navigate?.('/composer/guests'))
     const heading = await screen.findByRole('heading', {
       level: 1,

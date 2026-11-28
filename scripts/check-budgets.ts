@@ -1,5 +1,5 @@
 // Contrôle des budgets de taille (architecture §4.6, CA-NF-02). Le build échoue en cas de dépassement.
-// Les chunks compose, share et results recevront leur budget quand ils existeront (phases 4 à 8).
+// Les chunks share et results recevront leur budget quand ils existeront (phases 6 et 8).
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { gzipSync } from 'node:zlib'
@@ -20,6 +20,14 @@ type Budget = {
 const BUDGETS: Budget[] = [
   { label: 'entry (JS)', dir: ASSETS, match: /^index-.*\.js$/, maxKb: 110, measure: 'gzip' },
   { label: 'styles (CSS)', dir: ASSETS, match: /^index-.*\.css$/, maxKb: 30, measure: 'gzip' },
+  // Parcours de composition : étapes chargées à la demande, avec dnd-kit (architecture §4.6).
+  {
+    label: 'compose (JS)',
+    dir: ASSETS,
+    match: /^(TracksStep|GuestsStep|RecapStep)-.*\.js$/,
+    maxKb: 60,
+    measure: 'gzip',
+  },
   { label: 'polices (WOFF2)', dir: FONTS, match: /\.woff2$/, maxKb: 120, measure: 'raw' },
 ]
 

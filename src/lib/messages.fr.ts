@@ -69,6 +69,7 @@ export const t = {
 
   steps: {
     nav: 'Étapes de la composition',
+    label: (current: number, total: number, name: string) => `${current} / ${total} · ${name}`,
     names: ['Morceaux', 'Guests', 'Récap'] as const,
     counter: (current: number, total: number) => `${current} / ${total}`,
     srCurrent: (current: number, total: number, name: string) =>
@@ -155,10 +156,70 @@ export const t = {
   playlist: {
     castingLabel: 'Mon casting',
     feat: (artists: string) => `feat. ${artists}`,
+    title: 'Ma set-list',
+    castingNext: 'Étape suivante',
+    help: "Glisse une ligne pour changer l'ordre, ou utilise les flèches.",
+    helpDesktop:
+      "Glisse une ligne pour changer l'ordre. Au clavier : Espace pour saisir, flèches pour déplacer.",
+    empty: 'Ta set-list est vide. Ajoute des titres depuis la liste.',
+    full: 'Ta set-list est pleine. Retire un titre pour en mettre un autre.',
+    needOne: 'Ajoute au moins un titre pour continuer.',
+    continue: 'Continuer',
+    collapse: 'Réduire la set-list',
+    open: 'Ouvrir ma set-list',
+    moveUp: (title: string) => `Monter ${title}`,
+    moveDown: (title: string) => `Descendre ${title}`,
+    remove: (title: string) => `Retirer ${title}`,
+    dragHandle: (title: string) => `Déplacer ${title}`,
+    moved: (title: string, position: number, total: number) =>
+      `${title} déplacé en position ${position} sur ${total}.`,
+    removed: (title: string) => `${title} retiré de ta set-list.`,
+    // Annonces du glisser-déposer (dnd-kit), en français (DA §10).
+    dnd: {
+      instructions:
+        'Pour déplacer un titre, appuie sur Espace ou Entrée, utilise les flèches haut et bas, puis Espace ou Entrée pour le déposer. Échap annule.',
+      start: (title: string, position: number, total: number) =>
+        `${title} saisi, en position ${position} sur ${total}.`,
+      over: (title: string, position: number, total: number) =>
+        `${title} amené en position ${position} sur ${total}.`,
+      end: (title: string, position: number, total: number) =>
+        `${title} déposé en position ${position} sur ${total}.`,
+      cancel: (title: string, position: number) =>
+        `Déplacement annulé. ${title} reste en position ${position}.`,
+    },
+  },
+
+  tracks: {
+    title: 'CHOISIS TES TITRES',
+    search: 'Chercher un titre',
+    searchPlaceholder: 'Chercher un titre…',
+    filters: 'Filtrer les titres',
+    all: 'Tous',
+    clearFilters: 'Effacer les filtres',
+    types: { solo: 'Solo', collaboration: 'Collaboration', freestyle: 'Freestyle', autre: 'Autre' },
+    add: 'Ajouter',
+    added: 'Ajouté',
+    full: 'Set-list pleine',
+    noResult: (query: string) => `Aucun titre ne correspond à « ${query} ».`,
+    noResultHelp: "Vérifie l'orthographe ou cherche un autre mot du titre.",
+    noResultFiltered: 'Aucun titre ne correspond à ces filtres.',
+    clearSearch: 'Effacer la recherche',
+    loadError: 'Impossible de charger les titres.',
+    // Le brouillon ne garde que des identifiants : un titre retiré du catalogue n'a plus de nom.
+    unavailable: (tracks: number, guests: number) => {
+      const parts = [
+        tracks === 1 ? 'Un titre' : tracks > 1 ? `${tracks} titres` : '',
+        guests === 1 ? 'un guest' : guests > 1 ? `${guests} guests` : '',
+      ].filter(Boolean)
+      const many = tracks + guests > 1
+      const subject = parts.join(' et ')
+      return `${subject.charAt(0).toUpperCase()}${subject.slice(1)} ${many ? 'ne sont plus disponibles. Ils ont été retirés' : "n'est plus disponible. Il a été retiré"} de ta set-list.`
+    },
+    coverAlt: (project: string) => `Pochette de ${project}`,
   },
 
   pages: {
-    tracks: 'Choisis tes morceaux',
+    tracks: 'CHOISIS TES TITRES',
     guests: 'Les guests que je veux voir sur scène',
     recap: 'Signe ta set-list',
     confirmation: 'Ta set-list est déposée',

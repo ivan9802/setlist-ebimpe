@@ -172,7 +172,11 @@ describe('BottomSheet', () => {
     return (
       <BottomSheet
         title="Ma set-list"
+        aside={<p>3 / 20</p>}
+        description="Glisse une ligne pour changer l'ordre."
         summary={<p>Ma set-list · 3 / 20</p>}
+        collapseLabel="Réduire la set-list"
+        openLabel="Ouvrir ma set-list"
         open={open}
         onOpenChange={setOpen}
       >
@@ -181,7 +185,7 @@ describe('BottomSheet', () => {
     )
   }
 
-  it('s’ouvre depuis la poignée, se ferme et rend le focus à la poignée', () => {
+  it('s’ouvre depuis la poignée, se réduit et rend le focus à la poignée', () => {
     render(<Harness />)
     const handle = screen.getByRole('button', { name: 'Ouvrir ma set-list' })
     expect(handle.getAttribute('aria-expanded')).toBe('false')
@@ -189,7 +193,8 @@ describe('BottomSheet', () => {
     expect(handle.getAttribute('aria-expanded')).toBe('true')
     const dialog = screen.getByRole('dialog', { name: 'Ma set-list' })
     expect(dialog.hasAttribute('open')).toBe(true)
-    fireEvent.click(screen.getByRole('button', { name: 'Fermer la set-list' }))
+    expect(dialog.getAttribute('aria-describedby')).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Réduire la set-list' }))
     expect(dialog.hasAttribute('open')).toBe(false)
     expect(handle.getAttribute('aria-expanded')).toBe('false')
     expect(document.activeElement).toBe(handle)

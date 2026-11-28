@@ -17,6 +17,10 @@ import { PublicLayout } from './layouts/PublicLayout.tsx'
 const UpcomingPage = lazy(() =>
   import('../pages/UpcomingPage.tsx').then((m) => ({ default: m.UpcomingPage })),
 )
+/** Étape Morceaux : chunk du parcours (avec dnd-kit), chargé à la demande. */
+const TracksStep = lazy(() =>
+  import('../pages/compose/TracksStep.tsx').then((m) => ({ default: m.TracksStep })),
+)
 
 export function AppRoutes() {
   return (
@@ -33,7 +37,7 @@ export function AppRoutes() {
       </Route>
       <Route path="composer" element={<ComposeLayout />}>
         <Route index element={<Navigate to="morceaux" replace />} />
-        <Route path="morceaux" element={<UpcomingPage title={t.pages.tracks} />} />
+        <Route path="morceaux" element={<TracksStep />} />
         <Route path="guests" element={<UpcomingPage title={t.pages.guests} />} />
         <Route path="recap" element={<UpcomingPage title={t.pages.recap} />} />
       </Route>

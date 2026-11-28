@@ -1,5 +1,5 @@
-// Recherche de titres (DA §5) : `type="search"`, bouton Effacer qui rend le focus au champ,
-// nombre de résultats annoncé aux lecteurs d'écran.
+// Recherche de titres (DA §5, maquette 02) : `type="search"`, sans icône, bouton Effacer qui rend
+// le focus au champ, nombre de résultats annoncé aux lecteurs d'écran.
 import { useId, useRef } from 'react'
 import { t } from '../../lib/messages.fr.ts'
 import { Icon } from './Icon.tsx'
@@ -23,10 +23,6 @@ export function SearchField({ label, value, onChange, placeholder, resultCount }
         {label}
       </label>
       <div className="relative">
-        <Icon
-          name="search"
-          className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted"
-        />
         <input
           ref={input}
           id={id}
@@ -38,7 +34,7 @@ export function SearchField({ label, value, onChange, placeholder, resultCount }
           value={value}
           placeholder={placeholder}
           onChange={(e) => onChange(e.target.value)}
-          className="min-h-12 w-full rounded-control border border-concrete bg-concrete pr-12 pl-10 text-body text-paper placeholder:text-muted focus:border-paper [&::-webkit-search-cancel-button]:appearance-none"
+          className="min-h-12 w-full rounded-control border border-concrete bg-concrete pr-12 pl-4 text-body text-paper placeholder:text-muted focus:border-paper [&::-webkit-search-cancel-button]:appearance-none"
         />
         {value && (
           <button

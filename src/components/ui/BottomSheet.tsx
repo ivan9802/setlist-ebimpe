@@ -1,29 +1,47 @@
-// Tiroir « Ma set-list » sur mobile (DA §5) : une barre repliée en bas d'écran, puis un panneau
-// à mi-hauteur ou plein écran. Le panneau est un <dialog> modal natif : le reste de la page
-// devient inerte, Échap le ferme, le focus revient sur la poignée. Zones sûres respectées.
-import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
+// Tiroir « Ma set-list » sur mobile (DA §5, maquettes 02 et 03) : une barre repliée en bas d'écran
+// (poignée, compteur, « Continuer »), puis un panneau presque plein écran pour réordonner.
+// Le panneau est un <dialog> modal natif : le reste de la page devient inerte, Échap et
+// « Réduire » le ferment, le focus revient sur la poignée. Zones sûres respectées (DA §9).
+import { useEffect, useId, useRef, type ReactNode } from 'react'
 import { cx } from '../../lib/cx.ts'
-import { t } from '../../lib/messages.fr.ts'
-import { Icon } from './Icon.tsx'
 
 type Props = {
   /** Titre du panneau ouvert (« Ma set-list »). */
   title: string
-  /** Contenu de la barre repliée, à côté de la poignée (compteur, « Continuer »). */
+  /** À droite du titre : le compteur. */
+  aside?: ReactNode
+  /** Aide sous le titre (« Glisse une ligne… »). */
+  description?: string
+  /** Contenu de la barre repliée, sous la poignée (compteur, « Continuer »). */
   summary: ReactNode
-  /** Contenu du panneau ouvert (la feuille interactive). */
+  /** Contenu du panneau ouvert (la liste réordonnable). */
   children: ReactNode
-  /** Pied du panneau ouvert (souvent le même « Continuer »). */
+  /** Pied du panneau ouvert (« Continuer »). */
   footer?: ReactNode
+  /** Libellé du lien de fermeture (« Réduire la set-list »). */
+  collapseLabel: string
+  /** Nom de la poignée pour les lecteurs d'écran (« Ouvrir ma set-list »). */
+  openLabel: string
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-export function BottomSheet({ title, summary, children, footer, open, onOpenChange }: Props) {
+export function BottomSheet({
+  title,
+  aside,
+  description,
+  summary,
+  children,
+  footer,
+  collapseLabel,
+  openLabel,
+  open,
+  onOpenChange,
+}: Props) {
   const dialog = useRef<HTMLDialogElement>(null)
   const handle = useRef<HTMLButtonElement>(null)
-  const [full, setFull] = useState(false)
   const titleId = useId()
+  const descriptionId = useId()
   const panelId = useId()
 
   useEffect(() => {
@@ -37,7 +55,6 @@ export function BottomSheet({ title, summary, children, footer, open, onOpenChan
     const el = dialog.current
     if (!el) return
     const onClose = () => {
-      setFull(false)
       onOpenChange(false)
       handle.current?.focus()
     }
@@ -53,9 +70,11 @@ export function BottomSheet({ title, summary, children, footer, open, onOpenChan
     }
   }, [onOpenChange])
 
+  const grabber = <span aria-hidden="true" className="h-1 w-9 rounded-pill bg-muted" />
+
   return (
     <>
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-concrete bg-stage pb-[env(safe-area-inset-bottom)]">
+      <div className="fixed inset-x-0 bottom-0 z-30 rounded-t-[12px] bg-stage pb-[max(0.75rem,env(safe-area-inset-bottom))]">
         <button
           ref={handle}
           type="button"
@@ -65,54 +84,59 @@ export function BottomSheet({ title, summary, children, footer, open, onOpenChan
           onClick={() => onOpenChange(true)}
           className="flex h-6 w-full items-center justify-center"
         >
-          <span aria-hidden="true" className="h-1 w-10 rounded-pill bg-muted" />
-          <span className="sr-only">{t.sheet.open}</span>
+          {grabber}
+          <span className="sr-only">{openLabel}</span>
         </button>
-        <div className="gutter-x flex items-center justify-between gap-4 pb-3">{summary}</div>
+        <div className="gutter-x flex items-end justify-between gap-4">{summary}</div>
       </div>
 
       <dialog
         ref={dialog}
         id={panelId}
         aria-labelledby={titleId}
+        aria-describedby={description ? descriptionId : undefined}
         className={cx(
-          'mt-auto mb-0 w-full max-w-none overflow-hidden rounded-t-[12px] border-t border-concrete bg-stage p-0 text-paper backdrop:bg-night/75',
+          'mt-auto mb-0 h-[88dvh] max-h-[88dvh] w-full max-w-none overflow-hidden rounded-t-[12px] bg-stage p-0 text-paper backdrop:bg-night/75',
           'flex-col open:flex motion-safe:open:animate-sheet-in',
-          full ? 'h-[92dvh] max-h-[92dvh]' : 'max-h-[60dvh]',
-          '[@media(orientation:landscape)_and_(max-height:32rem)]:max-h-[70dvh]',
+          '[@media(orientation:landscape)_and_(max-height:32rem)]:h-[70dvh]',
         )}
       >
-        <div className="gutter-x flex items-center justify-between gap-2 border-b border-concrete py-2">
-          <h2 id={titleId} className="font-display text-display-m font-extrabold uppercase">
-            {title}
-          </h2>
-          <div className="flex">
-            <button
-              type="button"
-              onClick={() => setFull((f) => !f)}
-              aria-label={full ? t.sheet.collapse : t.sheet.expand}
-              className="grid size-12 place-items-center"
+        <button
+          type="button"
+          onClick={() => dialog.current?.close()}
+          tabIndex={-1}
+          aria-hidden="true"
+          className="flex h-6 w-full shrink-0 items-center justify-center"
+        >
+          {grabber}
+        </button>
+        <div className="gutter-x shrink-0 pb-3">
+          <div className="flex items-center justify-between gap-4">
+            <h2
+              id={titleId}
+              className="font-display text-[1.75rem] leading-none font-black uppercase"
             >
-              <Icon name={full ? 'chevronDown' : 'chevronUp'} />
-            </button>
-            <button
-              type="button"
-              onClick={() => dialog.current?.close()}
-              aria-label={t.sheet.close}
-              className="grid size-12 place-items-center"
-            >
-              <Icon name="close" />
-            </button>
+              {title}
+            </h2>
+            {aside}
           </div>
+          {description && (
+            <p id={descriptionId} className="mt-2 text-[0.875rem] text-muted">
+              {description}
+            </p>
+          )}
         </div>
-        <div className="gutter-x min-h-0 flex-1 overflow-y-auto overscroll-contain py-4">
-          {children}
+        <div className="gutter-x min-h-0 flex-1 overflow-y-auto overscroll-contain">{children}</div>
+        <div className="gutter-x flex shrink-0 flex-col items-center gap-1 pt-3 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
+          {footer}
+          <button
+            type="button"
+            onClick={() => dialog.current?.close()}
+            className="min-h-12 text-[0.9375rem] font-semibold text-muted underline underline-offset-4 hover:text-paper"
+          >
+            {collapseLabel}
+          </button>
         </div>
-        {footer && (
-          <div className="gutter-x border-t border-concrete py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-            {footer}
-          </div>
-        )}
       </dialog>
     </>
   )

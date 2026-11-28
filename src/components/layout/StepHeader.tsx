@@ -1,7 +1,7 @@
-// En-tête d'étape du parcours (DA §5) : bouton retour, « 1 / 3 » et nom de l'étape, plus une
-// barre de 3 segments. L'étape courante porte aria-current="step".
+// En-tête d'étape du parcours (DA §5, maquettes 02 et 10) : flèche retour et « 1 / 3 · MORCEAUX ».
+// Sur ordinateur, le nom de l'application s'ajoute à gauche et l'étape passe au centre.
+// La liste des étapes (avec aria-current="step") n'est lue que par les lecteurs d'écran.
 import { Link } from 'react-router'
-import { cx } from '../../lib/cx.ts'
 import { t } from '../../lib/messages.fr.ts'
 import { Icon } from '../ui/Icon.tsx'
 
@@ -19,28 +19,33 @@ export function StepHeader({ step }: { step: 1 | 2 | 3 }) {
   const backLabel = previous ? t.steps.backTo(previous.name) : t.backHome
 
   return (
-    <header className="gutter-x flex flex-col gap-2 pt-2 pb-3">
+    <header className="gutter-x grid min-h-14 grid-cols-[auto_1fr] items-center gap-x-2 pt-2 lg:min-h-20 lg:grid-cols-[1fr_auto_1fr]">
       <div className="flex items-center gap-2">
         <Link
           to={previous ? previous.path : '/'}
           aria-label={backLabel}
           className="-ml-3 grid size-12 place-items-center"
         >
-          <Icon name="chevronLeft" />
+          <Icon name="arrowLeft" size={24} />
         </Link>
-        <p aria-hidden="true" className="label-caps">
-          <span className="text-signal">{t.steps.counter(step, total)}</span> {current?.name}
-        </p>
+        <span
+          aria-hidden="true"
+          className="hidden font-display text-[1.375rem] leading-none font-black uppercase lg:inline"
+        >
+          {t.header.brand}
+        </span>
       </div>
-      <nav aria-label={t.steps.nav}>
-        <ol className="grid grid-cols-3 gap-1">
+      <p
+        aria-hidden="true"
+        className="text-[0.8125rem] font-semibold tracking-[0.08em] text-muted uppercase"
+      >
+        {t.steps.label(step, total, current?.name ?? '')}
+      </p>
+      <nav aria-label={t.steps.nav} className="sr-only">
+        <ol>
           {COMPOSE_STEPS.map((s, i) => (
-            <li
-              key={s.path}
-              aria-current={i + 1 === step ? 'step' : undefined}
-              className={cx('h-1 rounded-pill', i + 1 <= step ? 'bg-signal' : 'bg-concrete')}
-            >
-              <span className="sr-only">{t.steps.srCurrent(i + 1, total, s.name)}</span>
+            <li key={s.path} aria-current={i + 1 === step ? 'step' : undefined}>
+              {t.steps.srCurrent(i + 1, total, s.name)}
             </li>
           ))}
         </ol>

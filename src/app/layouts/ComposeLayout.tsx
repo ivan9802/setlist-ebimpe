@@ -29,7 +29,8 @@ export function ComposeLayout() {
           <Outlet />
         </Suspense>
       </main>
-      <IndependenceNote className="gutter-x py-6" />
+      {/* Sur mobile, la barre « Ma set-list » est fixée en bas : la mention reste lisible au-dessus. */}
+      <IndependenceNote className="gutter-x pt-6 pb-[calc(9rem+env(safe-area-inset-bottom))] lg:pb-6" />
     </div>
   )
 }

@@ -4,6 +4,27 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Ver
 
 ## [Non publié]
 
+### Ajouté (front, phase 4 : étape Morceaux et set-list)
+
+- Étape Morceaux conforme aux maquettes 02, 02b, 03 et 10 :
+  - recherche sans accents (CA-02), pastilles par projet, « Hors projet » et type, gardées dans l'adresse, « Effacer les filtres » ;
+  - liste groupée par projet avec intertitre collant, pochette ou monogramme, lignes « + Ajouter » et « ✓ Ajouté » (aria-pressed) ;
+  - états : silhouettes de chargement, recherche sans résultat, « Set-list pleine » (CA-03), erreur de chargement avec « Réessayer », titre devenu indisponible retiré du brouillon avec un message (UC-08).
+- Set-list réordonnable (UC-04, CA-05) : glisser-déposer tactile, souris et clavier (dnd-kit), boutons Monter, Descendre et Retirer, annonces en français, focus qui suit le titre déplacé ou retiré.
+- Mobile : tiroir « Ma set-list » (barre repliée avec compteur et « Continuer », panneau `<dialog>` avec « Réduire la set-list »). Ordinateur (≥ 1024 px) : feuille de papier collante à droite. Une seule des deux versions est rendue.
+- « Continuer » bloqué tant que la set-list est vide (CA-04), avec la raison écrite.
+- En-tête d'étape aligné sur la maquette : flèche retour, « 1 / 3 · MORCEAUX », « HIMRA ULTRA » sur ordinateur.
+- Chunk de l'étape : 21,8 Ko compressés (budget de composition de 60 Ko, contrôlé en CI).
+- Tests : 11 tests unitaires de l'étape et 12 tests de bout en bout (dont la réorganisation au clavier et sa conservation après rechargement, axe tiroir ouvert).
+
+### Décisions (front, phase 4, à valider)
+
+- Boutons Monter, Descendre et Retirer gardés sur la feuille de l'ordinateur, absents de la maquette 10 : ils sont l'alternative accessible au glisser-déposer exigée par UC-04 (1a).
+- Boutons du tiroir de 36 px, comme la maquette 03, en dessous des 48 px de la DA (§4) mais au-dessus du minimum WCAG 2.2 (24 px). Pastilles de 36 px avec une zone tactile étendue à 48 px.
+- Pastille sélectionnée en papier (maquette), et non en rouge comme le prévoyait la DA (§5).
+- Tablette (768 à 1023 px) : tiroir comme sur mobile, au lieu du panneau latéral décrit par la DA (§9).
+- Titre devenu indisponible : le message donne le nombre de titres retirés, pas leur nom, que le brouillon ne garde pas.
+
 ### Ajouté (front, phase 3 : accueil)
 
 - Accueil conforme aux maquettes 01, 01b et 01c, mesurées au pixel sur la copie Figma :

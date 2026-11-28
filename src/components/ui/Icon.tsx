@@ -8,6 +8,8 @@ const PATHS = {
   arrowUp: 'M12 19V5m-6 6l6-6 6 6',
   arrowDown: 'M12 5v14m6-6l-6 6-6-6',
   chevronLeft: 'M15 5l-7 7 7 7',
+  arrowLeft: 'M19 12H5m6-6l-6 6 6 6',
+  grip: 'M5 8h14M5 12h14M5 16h14',
   chevronUp: 'M5 15l7-7 7 7',
   chevronDown: 'M5 9l7 7 7-7',
   search: 'M10.5 17a6.5 6.5 0 100-13 6.5 6.5 0 000 13zm4.6-1.9L20 20',
