@@ -4,6 +4,18 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/). Ver
 
 ## [Non publié]
 
+### Ajouté (front, phase 2 : logique du catalogue et du brouillon)
+
+- `features/catalog` : recherche en mémoire insensible à la casse, aux accents et aux ligatures (« eclate » trouve « Éclaté », « coeur » trouve « Cœur »), tous les mots exigés ; filtres par projet (dont « Hors projet ») et par type, sérialisés dans l'adresse (`?projet=…&type=…`) ; regroupement par projet ; `useCatalog` et `useCampaign` (une seule requête `get_catalog` partagée, 10 min de validité), limites de la campagne, identifiants actifs.
+- `features/draft` : règles pures (ajout en fin de liste, doublon et 21e titre refusés, renumérotation, déplacement, 0 à 5 guests, continuer seulement avec 1 titre au moins), retrait des éléments devenus inactifs avec la liste de ce qui a été retiré ; persistance `hute:draft:v1` vérifiée à la lecture (un brouillon illisible est abandonné), écrite au plus toutes les 300 ms et forcée quand la page est quittée ; repli en mémoire en navigation privée ; `useDraft` et `useMarkDraftStarted` (D-2).
+- 47 tests unitaires (CA-02, CA-03, CA-04, CA-06, CA-07, UC-08, RG-BRO-01 à 03).
+
+### Décisions (front, phase 2, à valider)
+
+- Pas de `CampaignProvider` : le cache de `useResource` partage déjà une seule lecture du catalogue entre tous les écrans. `useCampaign()` donne l'état de la campagne.
+- Clé d'idempotence : elle reste la même pour un simple « Réessayer » (CA-12, CA-13), mais change si le brouillon est modifié après un envoi dont la réponse n'est pas arrivée. Sinon, le serveur renverrait le code de l'ancienne version. Champ `keyUsed` ajouté au brouillon v1, compatible (absent vaut faux).
+- Type `CampaignLimits` placé dans `shared/api-types.ts`, utilisé par les deux features sans import croisé.
+
 ### Ajouté (front, phase 1 : fondations du parcours fan)
 
 - Contrats partagés `shared/api-types.ts` (`Catalog`, `Stats`, `PublicPlaylist`, `SubmitRequest`) et `shared/errors.ts` (catalogue unique des codes, statuts HTTP, codes `HUTE_*`), d'après l'architecture §5.5 et §5.7.

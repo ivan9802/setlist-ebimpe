@@ -37,6 +37,9 @@ export type Catalog = {
   guests: CatalogGuest[]
 }
 
+/** Limites de composition réglées par l'admin (RG-TRK-02, RG-GST-01). */
+export type CampaignLimits = Pick<Catalog['campaign'], 'maxTracks' | 'maxGuests'>
+
 export type CatalogProject = {
   id: number
   name: string
