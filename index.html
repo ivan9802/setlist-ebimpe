@@ -2,8 +2,9 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#0E0D0C" />
+    <meta name="color-scheme" content="dark" />
     <!-- Retiré au sprint 3, à l'ouverture : rien ne doit être indexé avant. -->
     <meta name="robots" content="noindex" />
     <title>HIMRA ULTRA TRACKLIST EXPERIENCE</title>
@@ -11,9 +12,30 @@
       name="description"
       content="Compose la set-list que tu rêves d'entendre au Stade d'Ebimpé. Initiative indépendante de fans."
     />
+    <!-- Polices du premier écran : titre de campagne et texte courant (DA §3). -->
+    <link
+      rel="preload"
+      href="/fonts/big-shoulders-display-900-latin-v5.3.0.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/instrument-sans-400-latin-v5.3.0.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <p>
+        Cette page a besoin de JavaScript pour composer ta set-list. Initiative indépendante de
+        fans, sans lien officiel avec HIMRA ni avec l'organisation du concert.
+      </p>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
